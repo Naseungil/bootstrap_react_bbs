@@ -42,6 +42,10 @@ export default class Write extends Component {
         console.log(e);
       });
   };
+  datail = () => {
+    //글번호에 맞는 데이터 조회, 글 결과를 title, content반영, 수정모드 true
+  };
+  //this.props.isModifyMode에 변동사항이 생기면 detail 함수 실행, componentDidUpdate 함수로
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value, //계산된 속성 ES6 문법

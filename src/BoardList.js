@@ -70,6 +70,7 @@ export default class BoardList extends Component {
         this.setState({
           BoardList: data,
         });
+        this.props.renderComplete(); //App.js에 목록 출력이 완료되었다고 전달
       })
       .catch((e) => {
         // 에러 핸들링
@@ -80,6 +81,7 @@ export default class BoardList extends Component {
     this.getList();
   }
   render() {
+    console.log(this.props);
     console.log(this.state.BoardList);
     return (
       <>
@@ -108,7 +110,14 @@ export default class BoardList extends Component {
         </Table>
         <div className="d-flex gap-1">
           <Button variant="primary">글쓰기</Button>
-          <Button variant="secondary">수정하기</Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              this.props.handleModify(this.state.checkList);
+            }}
+          >
+            수정하기
+          </Button>
           <Button variant="danger">삭제하기</Button>
         </div>
       </>
