@@ -1,6 +1,20 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Axios from "axios";
+
+const submitTest = () => {
+  //react->server 요청을 보내고, 그 결과를 출력
+  Axios.get("http://localhost:8000/")
+    .then(function (response) {
+      // 성공 핸들링
+      alert("등록완료!");
+    })
+    .catch(function (error) {
+      // 에러 핸들링
+      console.log(error);
+    });
+};
 
 export default class BoardList extends Component {
   render() {
@@ -37,7 +51,9 @@ export default class BoardList extends Component {
           </tbody>
         </Table>
         <div className="d-flex gap-1">
-          <Button variant="primary">글쓰기</Button>
+          <Button onClick={submitTest} variant="primary">
+            글쓰기
+          </Button>
           <Button variant="secondary">수정하기</Button>
           <Button variant="danger">삭제하기</Button>
         </div>
