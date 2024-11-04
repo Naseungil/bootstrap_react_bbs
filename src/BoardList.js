@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Axios from "axios";
 
+/*
 const submitTest = () => {
   //react->server 요청을 보내고, 그 결과를 출력
   Axios.get("http://localhost:8000/")
@@ -15,9 +16,43 @@ const submitTest = () => {
       console.log(error);
     });
 };
+*/
+class Board extends Component {
+  render() {
+    return (
+      <tr>
+        <td>{this.props.no}</td>
+        <td>{this.props.title}</td>
+        <td>{this.props.registerId}</td>
+        <td>{this.props.date}</td>
+      </tr>
+    );
+  }
+}
 
 export default class BoardList extends Component {
+  state = {
+    BoardList: [],
+  };
+  getList = () => {
+    Axios.get("http://localhost:8000/list")
+      .then((res) => {
+        //const data = res.data;
+        const { data } = res; //destructuring 비구조 할당
+        this.setState({
+          BoardList: data,
+        });
+      })
+      .catch((e) => {
+        // 에러 핸들링
+        console.log(e);
+      });
+  };
+  componentDidMount() {
+    this.getList();
+  }
   render() {
+    console.log(this.state.BoardList);
     return (
       <>
         <Table striped bordered hover>
@@ -30,30 +65,19 @@ export default class BoardList extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>안녕하세요</td>
-              <td>admin</td>
-              <td>2024-11-04</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>안녕하세요</td>
-              <td>admin</td>
-              <td>2024-11-04</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>안녕하세요</td>
-              <td>admin</td>
-              <td>2024-11-04</td>
-            </tr>
+            {this.state.BoardList.map((item) => (
+              <Board
+                key={item.BOARD_ID}
+                no={item.BOARD_ID}
+                title={item.BOARD_TITLE}
+                registerId={item.REGISTER_ID}
+                date={item.REGISTER_DATE}
+              />
+            ))}
           </tbody>
         </Table>
         <div className="d-flex gap-1">
-          <Button onClick={submitTest} variant="primary">
-            글쓰기
-          </Button>
+          <Button variant="primary">글쓰기</Button>
           <Button variant="secondary">수정하기</Button>
           <Button variant="danger">삭제하기</Button>
         </div>
