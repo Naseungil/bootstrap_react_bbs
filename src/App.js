@@ -3,19 +3,15 @@ import "./App.css";
 import BoardList from "./BoardList";
 import Write from "./Write";
 import React, { Component } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
-  const navigate = useNavigate();
-  return <AppContent navigate={navigate} />;
-}
-
-class AppContent extends Component {
+export default class App extends Component {
   state = {
     isModifyMode: false, //수정모드
     isComplete: true, //렌더 완료(목록 출력 완료)
     boardId: 0, //수정,삭제할 글 번호
-    redirect: false, //주소 변경 상태 추가
+    redirect_to_write: false, //주소 변경 상태 추가
+    redirect_to_home: false,
   };
 
   handleModify = (checkList) => {
@@ -27,7 +23,7 @@ class AppContent extends Component {
     this.setState({
       isModifyMode: checkList.length === 1,
       boardId: checkList[0] || 0,
-      redirect: true,
+      redirect_to_write: true,
     });
   };
 
@@ -36,19 +32,26 @@ class AppContent extends Component {
       isModifyMode: false,
       isComplete: false,
       boardId: 0,
+      redirect_to_home: true,
     });
+    console.log("appjshandleCancel 실행");
   };
   componentDidUpdate() {
-    if (this.state.redirect) {
-      this.props.navigate("/write"); //navigate 함수로 리다이렉트
-      this.setState({ redirect: false });
+    // 리다이렉트 후 redirect 상태 초기화
+    if (this.state.redirect_to_write) {
+      this.setState({ redirect_to_write: false });
+    }
+    if (this.state.redirect_to_home) {
+      this.setState({ redirect_to_home: false });
     }
   }
   render() {
     return (
-      <div className="container">
-        <h1>React Board</h1>
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className="container">
+          <h1>React Board</h1>
+          {this.state.redirect_to_write && <Navigate to="/write" />}
+          {this.state.redirect_to_home && <Navigate to="/" />}
           <Routes>
             <Route
               path="/"
@@ -70,10 +73,8 @@ class AppContent extends Component {
               }
             />
           </Routes>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }
-
-export default App;
