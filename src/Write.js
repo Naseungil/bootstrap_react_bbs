@@ -34,8 +34,10 @@ export default class Write extends Component {
         this.setState({
           title: "",
           content: "",
+          isModifyMode: false,
         });
         this.props.handleCancel();
+        //글 수정 완료후 수정모드 -> false로 변경, 목록 다시 조회, boardID 초기화
       })
       .catch((e) => {
         // 에러 핸들링
