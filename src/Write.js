@@ -42,9 +42,9 @@ export default class Write extends Component {
         console.log(e);
       });
   };
-  datail = () => {
+  detail = () => {
     //글번호에 맞는 데이터 조회, 글 결과를 title, content반영, 수정모드 true
-    Axios.get(`http://localhost:8000/datail?id=${this.props.boardId}`)
+    Axios.get(`http://localhost:8000/detail?id=${this.props.boardId}`)
       .then((res) => {
         const { data } = res; //destructuring 비구조 할당
         this.setState({
@@ -63,7 +63,7 @@ export default class Write extends Component {
   componentDidUpdate(prevProps) {
     // 수정모드이고 boardId가 변경되었다면, 그 글의 내용조회(detail 함수) 실행
     if (this.props.isModifyMode && this.props.boardId !== prevProps.boardId) {
-      this.datail();
+      this.detail();
     }
   }
 
