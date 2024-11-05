@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Axios from "axios";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 
 /*
 const submitTest = () => {
@@ -142,7 +143,10 @@ export default class BoardList extends Component {
           </tbody>
         </Table>
         <div className="d-flex gap-1">
-          <Button variant="primary">글쓰기</Button>
+          <Link to="/write" className="btn btn-primary">
+            글쓰기
+          </Link>
+
           <Button
             variant="secondary"
             onClick={() => {
