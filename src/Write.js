@@ -44,8 +44,29 @@ export default class Write extends Component {
   };
   datail = () => {
     //글번호에 맞는 데이터 조회, 글 결과를 title, content반영, 수정모드 true
+    Axios.get(`http://localhost:8000/datail?id=${this.props.boardId}`)
+      .then((res) => {
+        const { data } = res; //destructuring 비구조 할당
+        this.setState({
+          title: data[0].BOARD_TITLE,
+          content: data[0].BOARD_CONTENT,
+          isModifyMode: true,
+        });
+      })
+      .catch((e) => {
+        // 에러 핸들링
+        console.log(e);
+      });
   };
   //this.props.isModifyMode에 변동사항이 생기면 detail 함수 실행, componentDidUpdate 함수로
+
+  componentDidUpdate(prevProps) {
+    // 수정모드이고 boardId가 변경되었다면, 그 글의 내용조회(detail 함수) 실행
+    if (this.props.isModifyMode && this.props.boardId !== prevProps.boardId) {
+      this.datail();
+    }
+  }
+
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value, //계산된 속성 ES6 문법
@@ -60,6 +81,7 @@ export default class Write extends Component {
           <Form.Control
             type="text"
             name="title"
+            value={this.state.title}
             placeholder="제목을 입력하세요"
             onChange={this.handleChange}
           />
@@ -69,6 +91,7 @@ export default class Write extends Component {
           <Form.Control
             as="textarea"
             name="content"
+            value={this.state.content}
             rows={3}
             onChange={this.handleChange}
           />
