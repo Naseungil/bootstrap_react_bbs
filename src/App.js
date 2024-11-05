@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import BoardList from "./BoardList";
 import Write from "./Write";
+import View from "./View";
 import React, { Component } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
@@ -72,6 +73,7 @@ export default class App extends Component {
                 />
               }
             />
+            <Route path="/view" element={<View />} />
           </Routes>
         </div>
       </BrowserRouter>
