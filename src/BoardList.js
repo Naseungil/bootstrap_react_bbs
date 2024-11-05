@@ -86,6 +86,33 @@ export default class BoardList extends Component {
       this.getList();
     }
   }
+  handleDelete = () => {
+    if (this.state.checkList.length === 0) {
+      alert("삭제할 게시글을 선택하세요");
+      return;
+    }
+
+    /*
+    let boardIDList = '';
+    this.state.checkList.forEach((num) => {
+      boardIDList = boardIDList + `${num},`;
+      console.log(boardIDList); // 1,2,3,
+      });
+      */
+    let boardIDList = this.state.checkList.join();
+
+    Axios.post("http://localhost:8000/delete", {
+      boardIDList,
+    })
+      .then((res) => {
+        this.getList();
+      })
+      .catch((e) => {
+        // 에러 핸들링
+        console.log(e);
+      });
+  };
+
   render() {
     console.log(this.props);
     console.log(this.state.BoardList);
@@ -124,7 +151,9 @@ export default class BoardList extends Component {
           >
             수정하기
           </Button>
-          <Button variant="danger">삭제하기</Button>
+          <Button variant="danger" onClick={this.handleDelete}>
+            삭제하기
+          </Button>
         </div>
       </>
     );
